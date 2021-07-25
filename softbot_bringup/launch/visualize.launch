@@ -1,0 +1,9 @@
+<launch>
+    <arg name="player_name" default="p_softbot"/>
+
+        <!-- Launch rviz, loading configuration file -->
+        <node name="rviz" pkg="rviz" type="rviz"
+              args="--display-config $(find p_softbot_bringup)/config/visualize_$(arg player_name).rviz" required="false">
+            <remap from="/move_base_simple/goal" to="$(arg player_name)/move_base_simple/goal"/>
+        </node>
+</launch>
