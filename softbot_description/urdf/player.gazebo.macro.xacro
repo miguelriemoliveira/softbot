@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <robot name="gazebo_macro" xmlns:xacro="http://ros.org/wiki/xacro">
-<xacro:macro name="gazebo_macro" params="player_color laser_visual camera_visual imu_visual">
+<xacro:macro name="gazebo_macro" params="color laser_visual camera_visual imu_visual">
 <!--  <xacro:arg name="laser_visual"  default="false"/>-->
 <!--  <xacro:arg name="camera_visual" default="false"/>-->
 <!--  <xacro:arg name="imu_visual"    default="false"/>-->
 
   <gazebo reference="base_link">
 <!--    <material>Gazebo/DarkGrey</material>-->
-    <material>Gazebo/${player_color}</material>
+    <material>Gazebo/${color}</material>
   </gazebo>
 
   <gazebo reference="base_link">
@@ -33,7 +33,7 @@
     <maxVel>0.1</maxVel>
     <fdir1>1 0 0</fdir1>
     <!--    Gazebo properties are global: https://answers.ros.org/question/216975/loading-variables-with-xacroinclude/ -->
-    <material>Gazebo/${player_color}</material>
+    <material>Gazebo/${color}</material>
   </gazebo>
 
   <gazebo reference="wheel_right_link">
@@ -45,7 +45,7 @@
     <maxVel>0.01</maxVel>
     <fdir1>1 0 0</fdir1>
     <!--    Gazebo properties are global: https://answers.ros.org/question/216975/loading-variables-with-xacroinclude/ -->
-    <material>Gazebo/${player_color}</material>
+    <material>Gazebo/${color}</material>
   </gazebo>
 
   <gazebo reference="caster_back_right_link">
@@ -185,7 +185,7 @@
   </gazebo>
 
   <gazebo reference="player_identifier_link">
-    <material>Gazebo/${player_color}</material>
+    <material>Gazebo/${color}</material>
   </gazebo>
 
 </xacro:macro>

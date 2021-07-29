@@ -1,24 +1,28 @@
 <?xml version="1.0" ?>
-<robot name="p_softbot" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="softbot" xmlns:xacro="http://ros.org/wiki/xacro">
   <!--  Xacro description of turtlebot robot waffle pi used to play team hunt.-->
   <!--  Miguel Riem Oliveira-->
   <!--  PARI, November 2020-->
 
   <!--Args are local, properties are global, so we copy the values of the arguments to the properties-->
-  <xacro:arg name="player_name" default="p_softbot" />
-  <xacro:arg name="player_color" default="Orange" /> <!-- e.g. Red, Orange. Must exist in Gazebo/Colors and be defined in properties.xacro.-->
+  <xacro:arg name="name" default="softbot" />
+  <xacro:arg name="color" default="Orange" /> <!-- e.g. Red, Orange. Must exist in Gazebo/Colors and be defined in properties.xacro.-->
 
   <!--Properties are global so they can be viewed from inside the included xacros-->
   <!--  args are used with $(arg arg_name), properties are used as ${property_name}-->
-  <xacro:property name="player_name" value="$(arg player_name)"/>
-  <xacro:property name="player_color" value="$(arg player_color)"/>
+  <xacro:property name="name" value="$(arg name)"/>
+  <xacro:property name="color" value="$(arg color)"/>
 
   <!-- Include other files-->
   <xacro:include filename="$(find softbot_description)/urdf/properties.xacro"/>
+  <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
+  <xacro:include filename="$(find softbot_description)/urdf/astra.urdf.xacro" />
 
-  <!--  <xacro:include filename="$(find ${player_name}_description)/urdf/player.gazebo.xacro"/>-->
+
+
+  <!--  <xacro:include filename="$(find ${name}_description)/urdf/player.gazebo.xacro"/>-->
   <xacro:include filename="$(find softbot_description)/urdf/player.gazebo.macro.xacro"/>
-  <xacro:gazebo_macro player_color="$(arg player_color)" laser_visual="false" camera_visual="false" imu_visual="true"/>
+  <xacro:gazebo_macro color="$(arg color)" laser_visual="false" camera_visual="false" imu_visual="true"/>
 
   <!-- Links and joints-->
   <link name="base_footprint"/>
@@ -68,7 +72,7 @@
       <geometry>
         <mesh filename="package://turtlebot3_description/meshes/wheels/left_tire.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="${player_color}"/>
+      <material name="${color}"/>
     </visual>
 
     <collision>
@@ -100,7 +104,7 @@
       <geometry>
         <mesh filename="package://turtlebot3_description/meshes/wheels/right_tire.stl" scale="0.001 0.001 0.001"/>
       </geometry>
-      <material name="${player_color}"/>
+      <material name="${color}"/>
     </visual>
 
     <collision>
@@ -233,7 +237,7 @@
   </joint>
   <link name="camera_rgb_optical_frame"/>
 
-  <link name="player_identifier_support_link">
+  <link name="lidar3d_support_link">
     <visual>
       <origin xyz="0 0 -0.1" rpy="0 0 0"/>
 <!--      <origin xyz="0 -0.1 -0.1" rpy="0 0 0"/>-->
@@ -245,26 +249,37 @@
     </visual>
   </link>
 
-  <joint name="base_link_to_player_identifier_support_link" type="fixed">
+  <joint name="base_link_to_lidar3d_support_link" type="fixed">
     <origin xyz="-.12 -.1 0.2" rpy="0 0 0"/>
     <parent link="base_link"/>
-    <child link="player_identifier_support_link"/>
+    <child link="lidar3d_support_link"/>
   </joint>
 
-  <link name="player_identifier_link">
+
+  <xacro:VLP-16 name="3dlidar" parent="lidar3d_support_link" topic="/3dlidar/points">
+    <origin xyz="0 0 0.001" rpy="0 0 0" />
+  </xacro:VLP-16>
+
+
+    <link name="front_camera_support_link">
     <visual>
-      <origin xyz="0 0 -0.2" rpy="0 0 0"/>
+      <origin xyz="0 0 -0.1" rpy="0 0 0"/>
       <geometry>
-        <cylinder length="0.03" radius="0.04"/>
+        <cylinder length="0.2" radius="0.004"/>
       </geometry>
-        <material name="${player_color}"/>
+        <material name="gray"/>
     </visual>
   </link>
 
-  <joint name="player_identifier_support_link_to_player_identifier_link" type="fixed">
-    <origin xyz="0 0 0.2" rpy="0 0 0"/>
-    <parent link="player_identifier_support_link"/>
-    <child link="player_identifier_link"/>
+  <joint name="base_link_to_front_camera_support_link" type="fixed">
+    <origin xyz="-.12 .1 0.2" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="front_camera_support_link"/>
   </joint>
+
+  <xacro:sensor_astra prefix="front_camera" parent="front_camera_support_link">
+    <origin xyz="0.02 0.07 0.015" rpy="0 0.0 0" />
+  </xacro:sensor_astra>
+
 
 </robot>

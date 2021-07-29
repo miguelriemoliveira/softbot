@@ -1,33 +1,29 @@
 <launch>
-    <arg name="player_name" default="softbot"/>
-    <arg name="player_color" default="Yellow"/>
+    <arg name="name" default="softbot"/>
+    <arg name="color" default="Gray"/>
     <arg name="x_pos" default="-0.3"/>
     <arg name="y_pos" default="0.0"/>
     <arg name="z_pos" default="0.0"/>
 
-    <!-- Use a player_name namespace to get unique topic names, services, parameters, etc.-->
-    <group ns="$(arg player_name)">
-       <!-- The tf_prefix config make the link names unique in each .urdf (almost as if they respected namespaces. -->
-       <!-- Check https://answers.ros.org/question/263415/simplest-multiple-robot-scenario-->
-       <param name="tf_prefix" value="$(arg player_name)"></param>
+    <!-- Use a name namespace to get unique topic names, services, parameters, etc.-->
+    <group ns="$(arg name)">
 
         <!--Load robot xacro into robot_description ros parameter.-->
-        <!-- Nested substitution of args, check: https://answers.ros.org/question/35283/nested-substitution-args-in-launch-files/-->
         <param name="robot_description" command="$(find xacro)/xacro '$(find softbot_description)/urdf/player.urdf.xacro'
-                                                 player_name:=$(arg player_name) player_color:=$(arg player_color)"/>
+                                                 name:=$(arg name) color:=$(arg color)"/>
 
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
     </group>
 
    <include file="$(find softbot_bringup)/launch/spawn.launch">
-        <arg name="player_name" value="$(arg player_name)"/>
+        <arg name="name" value="$(arg name)"/>
         <arg name="x_pos" default="$(arg x_pos)"/>
         <arg name="y_pos" default="$(arg y_pos)"/>
         <arg name="z_pos" default="$(arg z_pos)"/>
    </include>
 
    <include file="$(find softbot_bringup)/launch/teleop_rqt.launch">
-        <arg name="player_name" value="$(arg player_name)"/>
+        <arg name="name" value="$(arg name)"/>
    </include>
 
 </launch>

@@ -1,9 +1,10 @@
 <launch>
 
     <!-- Define which world to load.-->
-    <!-- Other possibilities:  turtlebot3_gazebo/empty ; turtlebot3_gazebo/turtlebot3_house ; pari_fnr/fnr-->
+<!--     Other possibilities:  turtlebot3_gazebo/empty ; turtlebot3_gazebo/turtlebot3_house ; pari_fnr/fnr-->
 <!--    <arg name="world" default="$(find turtlebot3_gazebo)/worlds/empty.world"/>-->
-    <arg name="world" default="$(find th_description)/worlds/th_arena.world"/>
+    <arg name="world" default="$(find softbot_gazebo)/worlds/softbot.world"/>
+<!--    <arg name="world" default="$(find th_description)/worlds/th_arena.world"/>-->
 <!--    <arg name="world" default="$(find turtlebot3_gazebo)/worlds/turtlebot3_house.world"/>-->
 <!--    <arg name="world" default="$(find pari_fnr)/worlds/fnr.world"/>-->
 

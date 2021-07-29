@@ -24,8 +24,8 @@ differential_drive_controller:
   cmd_vel_timeout: 0.25
 
   # Base frame_id
-  base_frame_id: "/p_softbot/base_footprint" #default: base_link
-  odom_frame_id : "/p_softbot/odom" # Name of frame to publish odometry in.
+  base_frame_id: "/softbot/base_footprint" #default: base_link
+  odom_frame_id : "/softbot/odom" # Name of frame to publish odometry in.
 
   enable_odom_tf : true # Publish to TF directly or not
   publish_cmd : true # Publish the velocity command to be executed. It is to monitor the effect of limiters on the controller input.
