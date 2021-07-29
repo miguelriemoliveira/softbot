@@ -1,19 +1,15 @@
 <launch>
     <arg name="name" default="softbot"/>
-    <arg name="color" default="Gray"/>
+    <arg name="color" default="Grey"/>
     <arg name="x_pos" default="-0.3"/>
     <arg name="y_pos" default="0.0"/>
     <arg name="z_pos" default="0.0"/>
 
-    <!-- Use a name namespace to get unique topic names, services, parameters, etc.-->
-    <group ns="$(arg name)">
-
         <!--Load robot xacro into robot_description ros parameter.-->
-        <param name="robot_description" command="$(find xacro)/xacro '$(find softbot_description)/urdf/player.urdf.xacro'
+        <param name="robot_description" command="$(find xacro)/xacro '$(find softbot_description)/urdf/softbot.urdf.xacro'
                                                  name:=$(arg name) color:=$(arg color)"/>
 
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
-    </group>
 
    <include file="$(find softbot_bringup)/launch/spawn.launch">
         <arg name="name" value="$(arg name)"/>

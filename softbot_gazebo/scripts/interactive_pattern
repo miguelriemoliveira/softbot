@@ -36,7 +36,7 @@ menu_handler = MenuHandler()
 
 def makeBox( msg, pose):
 
-    marker = Marker(header=Header(frame_id="odom", stamp=rospy.Time.now()),
+    marker = Marker(header=Header(frame_id="world", stamp=rospy.Time.now()),
                    ns=model_name, id=0, frame_locked=False,
                    type=Marker.MESH_RESOURCE, action=Marker.ADD, lifetime=rospy.Duration(0),
                    pose=pose,
@@ -56,7 +56,7 @@ def makeBoxControl( msg, pose ):
 
 def make6DofMarker(fixed, interaction_mode, pose, show_6dof=False):
     int_marker = InteractiveMarker()
-    int_marker.header.frame_id = "odom"
+    int_marker.header.frame_id = "world"
     int_marker.pose = pose
     int_marker.scale = 0.3
 
@@ -181,7 +181,7 @@ def processFeedback( feedback ):
         req.model_state.pose.orientation.y = pose.orientation.y
         req.model_state.pose.orientation.z = pose.orientation.z
         req.model_state.pose.orientation.w = pose.orientation.w
-        req.model_state.reference_frame = 'odom'
+        req.model_state.reference_frame = 'world'
 
         global set_state_service
         result = set_state_service(req.model_state)
@@ -271,7 +271,7 @@ if __name__ == "__main__":
     # Get current charuco gazebo model pose at set the marker's pose accordingly
     rospy.wait_for_service('/gazebo/get_model_state')
     get_model_state_service = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-    pose_gazebo = get_model_state_service(model_name, 'odom')
+    pose_gazebo = get_model_state_service(model_name, 'world')
 
     # pose = Pose(position=Point(x=2, y=2, z=1), orientation=Quaternion(x=0, y=0, z=0, w=1))
     import copy

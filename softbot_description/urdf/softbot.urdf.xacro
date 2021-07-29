@@ -19,9 +19,7 @@
   <xacro:include filename="$(find softbot_description)/urdf/astra.urdf.xacro" />
 
 
-
-  <!--  <xacro:include filename="$(find ${name}_description)/urdf/player.gazebo.xacro"/>-->
-  <xacro:include filename="$(find softbot_description)/urdf/player.gazebo.macro.xacro"/>
+  <xacro:include filename="$(find softbot_description)/urdf/softbot.gazebo.macro.xacro"/>
   <xacro:gazebo_macro color="$(arg color)" laser_visual="false" camera_visual="false" imu_visual="true"/>
 
   <!-- Links and joints-->
@@ -256,7 +254,7 @@
   </joint>
 
 
-  <xacro:VLP-16 name="3dlidar" parent="lidar3d_support_link" topic="/3dlidar/points">
+  <xacro:VLP-16 name="lidar3d" parent="lidar3d_support_link" topic="/lidar3d/points">
     <origin xyz="0 0 0.001" rpy="0 0 0" />
   </xacro:VLP-16>
 
