@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /Odometry1
         - /Odometry1/Shape1
         - /Odometry1/Covariance1
       Splitter Ratio: 0.7191489338874817
@@ -460,25 +461,25 @@ Visualization Manager:
           Color: 204; 51; 204
           Scale: 1
           Value: true
-        Value: true
-      Enabled: false
-      Keep: 100
+        Value: false
+      Enabled: true
+      Keep: 10000
       Name: Odometry
-      Position Tolerance: 0.009999999776482582
+      Position Tolerance: 0.10000000149011612
       Queue Size: 10
       Shape:
-        Alpha: 1
+        Alpha: 0.5
         Axes Length: 1
         Axes Radius: 0.10000000149011612
-        Color: 255; 255; 0
-        Head Length: 0.10000000149011612
+        Color: 170; 85; 255
+        Head Length: 0.03999999910593033
         Head Radius: 0.029999999329447746
-        Shaft Length: 0.20000000298023224
+        Shaft Length: 0.30000001192092896
         Shaft Radius: 0.009999999776482582
         Value: Arrow
       Topic: /odom
       Unreliable: false
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 255; 255; 255
@@ -507,7 +508,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.949434757232666
+      Distance: 8.914971351623535
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -515,17 +516,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.46110522747039795
-        Y: 0.5154775977134705
-        Z: 0.7385448813438416
+        X: 1.959097146987915
+        Y: -0.16052822768688202
+        Z: 0.09454852342605591
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8603985905647278
+      Pitch: 0.7603977918624878
       Target Frame: <Fixed Frame>
-      Yaw: 3.010399580001831
+      Yaw: 3.0904064178466797
     Saved: ~
 Window Geometry:
   BackCamera-Image:

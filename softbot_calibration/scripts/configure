@@ -1,4 +1,4 @@
 #!/bin/sh
 # Auto generated on 30/07/2021 05:27:55
 #      ATOMIC Framework
-rosrun atom_calibration configure_calibration_pkg -n softbot_calibration
+rosrun atom_calibration configure_calibration_pkg -n softbot_calibration --use_tfs

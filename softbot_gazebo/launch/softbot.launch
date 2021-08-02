@@ -1,22 +1,21 @@
 <launch>
 
     <!-- Define which world to load.-->
-<!--     Other possibilities:  turtlebot3_gazebo/empty ; turtlebot3_gazebo/turtlebot3_house ; pari_fnr/fnr-->
-<!--    <arg name="world" default="$(find turtlebot3_gazebo)/worlds/empty.world"/>-->
+    <arg name="headless" default="false"/>
+    <arg name="gui" default="true"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="false"/>
     <arg name="world" default="$(find softbot_gazebo)/worlds/softbot.world"/>
-<!--    <arg name="world" default="$(find th_description)/worlds/th_arena.world"/>-->
-<!--    <arg name="world" default="$(find turtlebot3_gazebo)/worlds/turtlebot3_house.world"/>-->
-<!--    <arg name="world" default="$(find pari_fnr)/worlds/fnr.world"/>-->
 
     <!-- Create gazebo world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(arg world)"/>
         <arg name="paused" value="false"/>
         <arg name="use_sim_time" value="true"/>
-        <arg name="gui" value="true"/>
-        <arg name="headless" value="false"/>
-        <arg name="debug" value="false"/>
-        <arg name="verbose" value="false"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="$(arg headless)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
     </include>
 
 </launch>
