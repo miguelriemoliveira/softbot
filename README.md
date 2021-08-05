@@ -4,7 +4,9 @@
 - **3dlidar** - A 3D LiDAR mounted on the robot frame;
 - **rgbd_cameras** - Three RGB-D cameras mounted on the robot frame, two facing the front and one facing the back of the robot.
 
-![softbot_gazebo](docs/softbot.png)
+![softbot_gazebo](docs/gazebo.png)
+
+![softbot_gazebo](docs/softbot_rviz.gif)
 
 # How to run
 
