@@ -21,6 +21,10 @@ Then you can spawn the softbot robot:
 
     roslaunch softbot_bringup bringup.launch
 
+To Drive the Robot:
+
+    roslaunch softbot_bringup teleop.launch 
+
 You can record a bag file using:
 
     roslaunch softbot_bringup record.launch
