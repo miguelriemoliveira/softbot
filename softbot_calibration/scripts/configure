@@ -1,4 +1,25 @@
 #!/bin/sh
-# Auto generated on 30/07/2021 05:27:55
+# Auto generated on 10/04/2022 23:23:59
 #      ATOMIC Framework
-rosrun atom_calibration configure_calibration_pkg -n softbot_calibration --use_tfs
+
+helpFunction()
+{
+   echo ""
+   echo "Usage: $0 -c config_file.yml"
+   echo -e "	-c Name of specific configuration file that must be inside the package_calibration/calibration/ folder."
+   exit 1
+}
+while getopts "c:h" flag
+do
+    case "${flag}" in
+        c ) configfile="$OPTARG" ;;
+        h ) helpFunction;;
+    esac
+done
+
+if test -z "$configfile"
+then
+rosrun atom_calibration configure_calibration_pkg -n softbot_calibration
+else
+rosrun atom_calibration configure_calibration_pkg -n softbot_calibration -cfg $configfile
+fi
