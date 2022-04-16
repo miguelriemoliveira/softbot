@@ -33,7 +33,7 @@
 description_file: "package://softbot_description/urdf/softbot.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
-bag_file: "$ROS_BAGS/softbot/softbot1.bag"
+bag_file: "$ROS_BAGS/softbot/softbot2.bag"
 
 # You must define a frame of reference for the optimization process.
 # It must exist in the transformation chains of all the sensors which are being calibrated.
@@ -42,28 +42,35 @@ world_link: "world"
 # ATOM will calibrate the extrinsic parameters of your sensors.
 # In this section you should discriminate the sensors that will be part of the calibrations.
 sensors:
-    # Each key will define a sensor and its name, which will be use throughout the calibration.
-    # Each sensor definition must have the following properties:
-    #       link:
-    #           The frame of the sensor's data (i.e. the header.frame_id).
-    #
-    #       parent_link:
-    #           The parent link of the transformation (i.e. link) to be calibrated.
-    #
-    #       child_link:
-    #           This is the transformation (i.e. link) that we be optimized.
-    #
-    #       topic_name:
-    #           Name of the ROS topic that contains the data produced by this sensor.
-    #           If you are calibrating an camera, you should use the raw image produced by the
-    #           sensors. Additionally, it the topic is an image it will automatically use the
-    #           respective `camera_info` topic.
-    #
-    # If you are using an image compressed topic such as:
-    #   /world_camera/rgb/image_raw/compressed
-    # you should not add the "compressed" part, use only:
-    #   /world_camera/rgb/image_raw
-    #
+  # Each key will define a sensor and its name, which will be use throughout the calibration.
+  # Each sensor definition must have the following properties:
+  #       link:
+  #           The frame of the sensor's data (i.e. the header.frame_id).
+  #
+  #       parent_link:
+  #           The parent link of the transformation (i.e. link) to be calibrated.
+  #
+  #       child_link:
+  #           This is the transformation (i.e. link) that we be optimized.
+  #
+  #       topic_name:
+  #           Name of the ROS topic that contains the data produced by this sensor.
+  #           If you are calibrating an camera, you should use the raw image produced by the
+  #           sensors. Additionally, it the topic is an image it will automatically use the
+  #           respective `camera_info` topic.
+  # OPTIONAL
+  #       throttle:
+  #           Set throttle: desired_frame_rate. If you don't use throttle, collapse the throttle option
+  #       modality:
+  #           Set this to identify the sensor modality. If this flag is not set, the sensor will be
+  #           identified by the message type.
+  #           Current options: lidar3d, rgb, depth, lidar2d
+  #
+  # If you are using an image compressed topic such as:
+  #   /world_camera/rgb/image_raw/compressed
+  # you should not add the "compressed" part, use only:
+  #   /world_camera/rgb/image_raw
+  #
     front_left_camera:
         link: "front_left_camera_rgb_optical_frame"
         parent_link: "front_left_camera_support_link"
@@ -78,12 +85,12 @@ sensors:
         topic_name: "/front_right_camera/rgb/image_raw"
         modality: "rgb"
 
-    back_camera:
-        link: "back_camera_rgb_optical_frame"
-        parent_link: "back_camera_support_link"
-        child_link: "back_camera_link"
-        topic_name: "/back_camera/rgb/image_raw"
-        modality: "rgb"
+#    back_camera:
+#        link: "back_camera_rgb_optical_frame"
+#        parent_link: "back_camera_support_link"
+#        child_link: "back_camera_link"
+#        topic_name: "/back_camera/rgb/image_raw"
+#        modality: "rgb"
 
     lidar3d:
         link: "lidar3d"
@@ -151,4 +158,3 @@ anchored_sensor: ""
 
 # Max time delta (in milliseconds) between sensor data messages when creating a collection.
 max_duration_between_msgs: 1000
-

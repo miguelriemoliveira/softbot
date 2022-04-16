@@ -29,7 +29,42 @@ You can record a bag file using:
 
     roslaunch softbot_bringup record.launch
 
+OBS: 
+       
+    The collection is automaticaly saved with a name like: 
 
+You can record a bag file using:
+
+    roslaunch softbot_bringup record.launch
+
+Play the bag file
+
+    roslaunch softbot_calibration playbag.launch
+
+#   Configuring a calibration package
+Once your calibration package is created you will have to configure the calibration procedure by editing the softbot_calibration/calibration/config.yml file with your system information. Here is an example of a config.yml file.
+    
+    rosrun atom_calibration create_calibration_pkg --name softbot_calibration
+
+After filling the config.yml file, you can run the package configuration:
+
+    rosrun atom_calibration configure_calibration_pkg -n softbot_calibration --use_tfs
+
+This will create a set of files for launching the system, configuring rviz, etc.
+
+#   Collect data
+
+To run a system calibration, one requires sensor data collected at different time instants. We refer to these as data collections. To collect data, the user should launch:
+
+    roslaunch softbot_calibration collect_data.launch  output_folder:=~/datasets/softbot/dataset3 overwrite:=true
+# Calibrate sensors
+finally run an optimization that will calibrate your sensors:
+
+    roslaunch softbot_calibration calibrate.launch dataset_file:=~/datasets/softbot/dataset3/dataset.json run_calibration:=false 
+
+and then launch the script in standalone mode
+
+    rosrun atom_calibration calibrate -json ~/datasets/<my_dataset>/dataset.json  -phased -rv -v -si
 
 # Installation
 
