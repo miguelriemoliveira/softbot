@@ -286,16 +286,16 @@
     <origin xyz="0.02 0.07 0.015" rpy="0 0.0 0" />
   </xacro:sensor_astra>
 
-  <link name="back_camera_support_link">
-  </link>
+<!--  <link name="back_camera_support_link">-->
+<!--  </link>-->
 
-  <joint name="platform_support_leg1_link_to_back_camera_support_link" type="fixed">
-    <origin xyz="-0.02 -0.05 -0.10" rpy="0.01 -0.35 3.14"/>
-    <parent link="platform_support_leg1_link"/>
-    <child link="back_camera_support_link"/>
-  </joint>
+<!--  <joint name="platform_support_leg1_link_to_back_camera_support_link" type="fixed">-->
+<!--    <origin xyz="-0.02 -0.05 -0.10" rpy="0.01 -0.35 3.14"/>-->
+<!--    <parent link="platform_support_leg1_link"/>-->
+<!--    <child link="back_camera_support_link"/>-->
+<!--  </joint>-->
 
-  <xacro:sensor_astra prefix="back_camera" parent="back_camera_support_link">
-    <origin xyz="0.02 0.07 0.015" rpy="0 0.0 0" />
-  </xacro:sensor_astra>
+<!--  <xacro:sensor_astra prefix="back_camera" parent="back_camera_support_link">-->
+<!--    <origin xyz="0.02 0.07 0.015" rpy="0 0.0 0" />-->
+<!--  </xacro:sensor_astra>-->
 </robot>

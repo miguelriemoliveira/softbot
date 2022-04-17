@@ -31,7 +31,7 @@ You can record a bag file using:
 
 OBS: 
        
-    The collection is automaticaly saved with a name like: 
+    The collection is automaticaly saved with a name like: tmp_2022-04-16-17-58-57.bag
 
 You can record a bag file using:
 
@@ -64,7 +64,7 @@ finally run an optimization that will calibrate your sensors:
 
 and then launch the script in standalone mode
 
-    rosrun atom_calibration calibrate -json ~/datasets/<my_dataset>/dataset.json  -phased -rv -v -si
+    rosrun atom_calibration calibrate -json ~/datasets/softbot/dataset3/dataset.json  -phased -rv -v -si
 
 # Installation
 
