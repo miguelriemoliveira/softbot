@@ -33,7 +33,8 @@
 description_file: "package://softbot_description/urdf/softbot.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
-bag_file: "$ROS_BAGS/softbot/train_dataset2.bag"
+# bag_file: "$ROS_BAGS/softbot/train_dataset2.bag"
+bag_file: "$ROS_BAGS/softbot/softbot1.bag"
 
 # You must define a frame of reference for the optimization process.
 # It must exist in the transformation chains of all the sensors which are being calibrated.
@@ -71,83 +72,81 @@ sensors:
   # you should not add the "compressed" part, use only:
   #   /world_camera/rgb/image_raw
   #
-    front_left_camera:
-        link: "front_left_camera_rgb_optical_frame"
-        parent_link: "front_left_camera_support_link"
-        child_link: "front_left_camera_link"
-        topic_name: "/front_left_camera/rgb/image_raw"
-        modality: "rgb"
+  front_left_camera:
+    link: "front_left_camera_rgb_optical_frame"
+    parent_link: "front_left_camera_support_link"
+    child_link: "front_left_camera_link"
+    topic_name: "/front_left_camera/rgb/image_raw"
+    modality: "rgb"
 
-    front_right_camera:
-        link: "front_right_camera_rgb_optical_frame"
-        parent_link: "front_right_camera_support_link"
-        child_link: "front_right_camera_link"
-        topic_name: "/front_right_camera/rgb/image_raw"
-        modality: "rgb"
+  front_right_camera:
+    link: "front_right_camera_rgb_optical_frame"
+    parent_link: "front_right_camera_support_link"
+    child_link: "front_right_camera_link"
+    topic_name: "/front_right_camera/rgb/image_raw"
+    modality: "rgb"
 
-#    back_camera:
-#        link: "back_camera_rgb_optical_frame"
-#        parent_link: "back_camera_support_link"
-#        child_link: "back_camera_link"
-#        topic_name: "/back_camera/rgb/image_raw"
-#        modality: "rgb"
+  #    back_camera:
+  #        link: "back_camera_rgb_optical_frame"
+  #        parent_link: "back_camera_support_link"
+  #        child_link: "back_camera_link"
+  #        topic_name: "/back_camera/rgb/image_raw"
+  #        modality: "rgb"
 
-    lidar3d:
-        link: "lidar3d"
-        parent_link: "lidar3d_plate_link"
-        child_link: "lidar3d_base_link"
-        topic_name: "/lidar3d/points"
-        modality: "lidar3d"
+  lidar3d:
+    link: "lidar3d"
+    parent_link: "lidar3d_plate_link"
+    child_link: "lidar3d_base_link"
+    topic_name: "/lidar3d/points"
+    modality: "lidar3d"
 
 # The calibration requires a detectable pattern.
 # This section describes the properties of the calibration pattern used in th calibration.
 calibration_pattern:
+  # The frame id (or link) of the pattern.
+  # This link/transformation will be optimized.
+  link: "pattern_link"
 
-    # The frame id (or link) of the pattern.
-    # This link/transformation will be optimized.
-    link: "pattern_link"
+  # The parent frame id (or link) of the pattern.
+  # For example, in hand-eye calibration the parent link
+  # of the pattern can be the end-effector or the base of the arm
+  parent_link: "world"
 
-    # The parent frame id (or link) of the pattern.
-    # For example, in hand-eye calibration the parent link
-    # of the pattern can be the end-effector or the base of the arm
-    parent_link: "world"
+  # Defines if the pattern link is the same in all collections (i.e. fixed=true),
+  # or each collection will have its own estimative of the link transformation.
+  fixed: true
 
-    # Defines if the pattern link is the same in all collections (i.e. fixed=true),
-    # or each collection will have its own estimative of the link transformation.
-    fixed: true
+  # The type of pattern used for the calibration.
+  # Supported pattern are:
+  # - chessboard
+  # - charuco
+  pattern_type: "charuco"
 
-    # The type of pattern used for the calibration.
-    # Supported pattern are:
-    # - chessboard
-    # - charuco
-    pattern_type: "charuco"
+  # If the pattern type is "charuco" you need to define
+  # the aruco dictionary used by the pattern.
+  # See https://docs.opencv.org/trunk/dc/df7/dictionary_8hpp.html
+  dictionary: "DICT_5X5_100"
 
-    # If the pattern type is "charuco" you need to define
-    # the aruco dictionary used by the pattern.
-    # See https://docs.opencv.org/trunk/dc/df7/dictionary_8hpp.html
-    dictionary: "DICT_5X5_100"
+  # Mesh file (collada.dae or stl) for showing pattern on rviz. URI or regular path.
+  # See: description_file
+  mesh_file: "package://softbot_gazebo/models/charuco_800x600/charuco_800x600.dae"
 
-    # Mesh file (collada.dae or stl) for showing pattern on rviz. URI or regular path.
-    # See: description_file
-    mesh_file: "package://softbot_gazebo/models/charuco_800x600/charuco_800x600.dae"
+  # The border width from the edge corner to the pattern physical edge.
+  # Used for 3D sensors and lidars.
+  # It can be a scalar (same border in x and y directions), or it can be {'x': ..., 'y': ,,,}
+  border_size: { "x": 0.04, "y": 0.03 }
 
-    # The border width from the edge corner to the pattern physical edge.
-    # Used for 3D sensors and lidars.
-    # It can be a scalar (same border in x and y directions), or it can be {'x': ..., 'y': ,,,}
-    border_size: {'x': 0.04, 'y': 0.03}
+  # The number of corners the pattern has in the X and Y dimensions.
+  # Note: The charuco detector uses the number of squares per dimension in its detector.
+  # Internally we add a +1 to Y and X dimensions to account for that.
+  # Therfore, the number of corners should be used even for the charuco pattern.
+  dimension: { "x": 11, "y": 8 }
 
-    # The number of corners the pattern has in the X and Y dimensions.
-    # Note: The charuco detector uses the number of squares per dimension in its detector.
-    # Internally we add a +1 to Y and X dimensions to account for that.
-    # Therfore, the number of corners should be used even for the charuco pattern.
-    dimension: {"x": 11, "y": 8}
+  # The length of the square edge.
+  size: 0.06
 
-    # The length of the square edge.
-    size: 0.06
-
-    # The length of the charuco inner marker.
-    inner_size: 0.045
-
+  # The length of the charuco inner marker.
+  inner_size: 0.045
 
 # Miscellaneous configuration
 

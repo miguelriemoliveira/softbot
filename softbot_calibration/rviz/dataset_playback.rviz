@@ -65,16 +65,6 @@ Visualization Manager:
     Tree: {}
     Update Interval: 0
     Value: false
-  - Class: rviz/RobotModel
-    Collision Enabled: false
-    Enabled: true
-    Links: {}
-    Name: RobotModel
-    Robot Description: robot_description
-    TF Prefix: ''
-    Update Interval: 0
-    Value: true
-    Visual Enabled: true
   - Class: rviz/MarkerArray
     Enabled: true
     Marker Topic: /dataset_playback/robot_meshes
@@ -84,11 +74,11 @@ Visualization Manager:
     Value: true
   - Class: rviz/Image
     Enabled: true
-    Image Topic: /front_left_camera/rgb/image_raw/labeled
+    Image Topic: /front_left_camera/rgb/image_raw/labeled2d
     Max Value: 1
     Median window: 5
     Min Value: 0
-    Name: front_left_camera-Image
+    Name: front_left_camera-Labels-Image
     Normalize Range: true
     Queue Size: 2
     Transport Hint: raw
@@ -96,11 +86,11 @@ Visualization Manager:
     Value: false
   - Class: rviz/Image
     Enabled: true
-    Image Topic: /front_right_camera/rgb/image_raw/labeled
+    Image Topic: /front_right_camera/rgb/image_raw/labeled2d
     Max Value: 1
     Median window: 5
     Min Value: 0
-    Name: front_right_camera-Image
+    Name: front_right_camera-Labels-Image
     Normalize Range: true
     Queue Size: 2
     Transport Hint: raw
@@ -124,14 +114,14 @@ Visualization Manager:
     Max Intensity: 4096
     Min Color: 0; 0; 0
     Min Intensity: 0
-    Name: lidar3d-PointCloud2
+    Name: lidar3d-Labels3d-PointCloud2
     Position Transformer: ''
     Queue Size: 10
     Selectable: true
     Size (Pixels): 3
     Size (m): 0.02
     Style: Spheres
-    Topic: lidar3d/points
+    Topic: /lidar3d/points/labeled3d
     Unreliable: false
     Use Fixed Frame: true
     Use rainbow: true
