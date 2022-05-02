@@ -73,6 +73,10 @@ It is possible to add an initial gess of the position of the sensors in order to
 
     rosrun atom_calibration calibrate -json ~/datasets/softbot/dataset4/dataset_corrected.json  -phased -rv -v -si -csf "lambda x: int(x) not in [18,24,23] " -nig 0.01  0.003 -ss 3 -ipg
 
+To avaluate the callibration that was done, its need to do the anotation
+
+    rosrun atom_evaluation annotate.py -test_json TEST_JSON_FILE -cs front_left_camara -si
+                
 
 # Installation
 
