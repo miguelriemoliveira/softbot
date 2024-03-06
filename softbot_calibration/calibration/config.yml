@@ -73,32 +73,35 @@ sensors:
   #   /world_camera/rgb/image_raw
   #
   front_left_camera:
-    link: "front_left_camera_rgb_optical_frame"
-    parent_link: "front_left_camera_support_link"
-    child_link: "front_left_camera_link"
-    topic_name: "/front_left_camera/rgb/image_raw"
-    modality: "rgb"
 
-  front_right_camera:
-    link: "front_right_camera_rgb_optical_frame"
-    parent_link: "front_right_camera_support_link"
-    child_link: "front_right_camera_link"
-    topic_name: "/front_right_camera/rgb/image_raw"
-    modality: "rgb"
+    link        : "front_left_camera_rgb_optical_frame"
+    parent_link : "front_left_camera_support_link"
+    child_link  : "front_left_camera_link"
+    topic_name  : "/front_left_camera/rgb/image_raw"
+    modality    : "rgb"
+    throttle    :
 
+  # front_right_camera:
+  #   link: "front_right_camera_rgb_optical_frame"
+  #   parent_link: "front_right_camera_support_link"
+  #   child_link: "front_right_camera_link"
+  #   topic_name: "/front_right_camera/rgb/image_raw"
+  #   modality: "rgb"
+  #   throttle : 
+  
+  # lidar3d:
+  #   link: "lidar3d"
+  #   parent_link: "lidar3d_plate_link"
+  #   child_link: "lidar3d_base_link"
+  #   topic_name: "/lidar3d/points"
+  #   modality: "lidar3d"
+  #   throttle : 
   #    back_camera:
   #        link: "back_camera_rgb_optical_frame"
   #        parent_link: "back_camera_support_link"
   #        child_link: "back_camera_link"
   #        topic_name: "/back_camera/rgb/image_raw"
   #        modality: "rgb"
-
-  lidar3d:
-    link: "lidar3d"
-    parent_link: "lidar3d_plate_link"
-    child_link: "lidar3d_base_link"
-    topic_name: "/lidar3d/points"
-    modality: "lidar3d"
 
 # The calibration requires a detectable pattern.
 # This section describes the properties of the calibration pattern used in th calibration.
