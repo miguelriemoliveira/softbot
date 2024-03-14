@@ -35,7 +35,7 @@
 description_file: "package://softbot_description/urdf/softbot.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
-bag_file: "$ROS_BAGS/softbot1.bag" 
+bag_file: "$ROS_BAGS/softbot/train_softbot.bag" 
 
 # You must define a frame of reference for the optimization process.
 # It must exist in the transformation chains of all the sensors which are being calibrated.
@@ -76,7 +76,7 @@ sensors:
     child_link  : "front_left_camera_link"
     topic_name  : "/front_left_camera/rgb/image_raw"
     modality    : "rgb"
-    throttle    :
+    throttle    : 10
 
   front_right_camera:
     link: "front_right_camera_rgb_optical_frame"
@@ -84,15 +84,15 @@ sensors:
     child_link: "front_right_camera_link"
     topic_name: "/front_right_camera/rgb/image_raw"
     modality: "rgb"
-    throttle : 
+    throttle : 10
   
-  lidar3d:
-    link: "lidar3d"
-    parent_link: "lidar3d_plate_link"
-    child_link: "lidar3d_base_link"
-    topic_name: "/lidar3d/points"
-    modality: "lidar3d"
-    throttle : 
+  # lidar3d:
+  #   link: "lidar3d"
+  #   parent_link: "lidar3d_plate_link"
+  #   child_link: "lidar3d_base_link"
+  #   topic_name: "/lidar3d/points"
+  #   modality: "lidar3d"
+  #   throttle : 
 
   #    back_camera:
   #        link: "back_camera_rgb_optical_frame"
@@ -105,6 +105,9 @@ sensors:
 # ATOM will calibrate the extrinsic parameters of your links.
 # In this section you should discriminate the additional transformations that will be part of the calibrations.
 additional_tfs:
+    world_to_base_footprint:
+        parent_link: "world"
+        child_link: "base_footprint"
   # Each key will define a transformations and its name, which will be use throughout the calibration.
   # Each additional transformations definition must have the following properties:
   #
@@ -113,6 +116,8 @@ additional_tfs:
   #
   #       child_link:
   #           This is the transformation (i.e. link) that we be optimized.
+
+
   #
   # EXAMPLE:
   #base_footprint_to_base_link:
@@ -193,7 +198,8 @@ calibration_patterns:
 # If your calibration problem is not fully constrained you should anchored one of the sensors.
 # This makes it immovable during the optimization.
 # Leave empty if no sensor is to be anchored.
-anchored_sensor: "lidar3d"
+# anchored_sensor: "lidar3d"
+anchored_sensor: "front_right_camera"
 
 # Max time delta (in milliseconds) between sensor data messages when creating a collection.
 max_duration_between_msgs: 1000
