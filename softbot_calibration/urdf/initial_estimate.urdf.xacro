@@ -16,7 +16,10 @@
   <!-- Include other files-->
   <xacro:include filename="$(find softbot_description)/urdf/properties.xacro"/>
   <xacro:include filename="$(find softbot_description)/urdf/VLP-16.urdf.xacro"/>
+  <xacro:include filename="$(find softbot_description)/urdf/VLP-16_blue.urdf.xacro"/>
   <xacro:include filename="$(find softbot_description)/urdf/astra.urdf.xacro" />
+  <xacro:include filename="$(find softbot_description)/urdf/astra_red.urdf.xacro" />
+  <xacro:include filename="$(find softbot_description)/urdf/astra_green.urdf.xacro" />
 
 
   <xacro:include filename="$(find softbot_description)/urdf/softbot.gazebo.macro.xacro"/>
@@ -256,9 +259,9 @@
   </joint>
 
 
-  <xacro:VLP-16 name="lidar3d" parent="lidar3d_plate_link" topic="/lidar3d/points">
+  <xacro:VLP-16_blue name="lidar3d" parent="lidar3d_plate_link" topic="/lidar3d/points">
     <origin xyz="0 0 0" rpy="0 0 0" />
-  </xacro:VLP-16>
+  </xacro:VLP-16_blue>
 
   <link name="front_left_camera_support_link">
   </link>
@@ -269,9 +272,9 @@
     <child link="front_left_camera_support_link"/>
   </joint>
 
-  <xacro:sensor_astra prefix="front_left_camera" parent="front_left_camera_support_link">
+  <xacro:sensor_astra_red prefix="front_left_camera" parent="front_left_camera_support_link">
     <origin xyz="0.02 0.07 0.015" rpy="0 0.0 0" />
-  </xacro:sensor_astra>
+  </xacro:sensor_astra_red>
 
   <link name="front_right_camera_support_link">
   </link>
@@ -282,9 +285,9 @@
     <child link="front_right_camera_support_link"/>
   </joint>
 
-  <xacro:sensor_astra prefix="front_right_camera" parent="front_right_camera_support_link">
+  <xacro:sensor_astra_green prefix="front_right_camera" parent="front_right_camera_support_link">
     <origin xyz="0.02 0.07 0.015" rpy="0 0.0 0" />
-  </xacro:sensor_astra>
+  </xacro:sensor_astra_green>
 
 <!--  <link name="back_camera_support_link">-->
 <!--  </link>-->
