@@ -44,7 +44,8 @@ Play the bag file
 #   Configuring a calibration package
 Once your calibration package is created you will have to configure the calibration procedure by editing the softbot_calibration/calibration/config.yml file with your system information. Here is an example of a config.yml file.
     
-    rosrun atom_calibration create_calibration_pkg --name softbot_calibration
+    rosrun softbot_calibration configure 
+
 
 After filling the config.yml file, you can run the package configuration:
 

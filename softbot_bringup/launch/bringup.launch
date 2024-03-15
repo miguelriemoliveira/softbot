@@ -5,11 +5,15 @@
     <arg name="x_pos" default="-0.3"/>
     <arg name="y_pos" default="0.0"/>
     <arg name="z_pos" default="0.0"/>
+    <arg name="controller" default="false" doc="control the robot with a controller" />
+    <arg name="max_controller_vel" default="0.4" doc="Limit the max velocity of the robot while using a controller" />
 
     <!--Load robot xacro into robot_description ros parameter.-->
     <param name="robot_description" command="$(find xacro)/xacro '$(find softbot_description)/urdf/softbot.urdf.xacro'
                                                  name:=$(arg name) color:=$(arg color)"/>
 
+    <!-- Global veloctiy param  -->
+    <param name="/max_velocity" value="$(arg max_controller_vel)" />
 
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
@@ -20,10 +24,19 @@
         <arg name="y_pos" default="$(arg y_pos)"/>
         <arg name="z_pos" default="$(arg z_pos)"/>
     </include>
+    
+    <!-- Manual Controlling mode -->
+    <include if="$(arg controller)" file="$(find softbot_bringup)/launch/joy_teleop.launch" />
 
-    <include file="$(find softbot_bringup)/launch/teleop_rqt.launch">
-        <arg name="name" value="$(arg name)"/>
-    </include>
+    <group unless="$(arg controller)">
+        <!-- <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering" args="-t"
+            output="screen" /> -->
+
+        <include file="$(find softbot_bringup)/launch/teleop_rqt.launch">
+            <arg name="name" value="$(arg name)"/>
+        </include>
+    </group>
+
 
     <include file="$(find softbot_bringup)/launch/visualize.launch">
     </include>
