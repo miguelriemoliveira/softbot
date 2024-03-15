@@ -32,23 +32,25 @@ model_name = 'charuco_800x600'
 server = None
 menu_handler = MenuHandler()
 
-def makeBox( msg, pose):
+
+def makeBox(msg, pose):
 
     marker = Marker(header=Header(frame_id="world", stamp=rospy.Time.now()),
-                   ns=model_name, id=0, frame_locked=False,
-                   type=Marker.MESH_RESOURCE, action=Marker.ADD, lifetime=rospy.Duration(0),
-                   pose=pose,
-                   scale=Vector3(x=1.0, y=1.0, z=1.0),
-                   color=ColorRGBA(r=1, g=1, b=1, a=1))
-    marker.mesh_resource = 'package://softbot_gazebo/models/charuco_800x600/charuco_800x600.dae'
+                    ns=model_name, id=0, frame_locked=False,
+                    type=Marker.MESH_RESOURCE, action=Marker.ADD, lifetime=rospy.Duration(0),
+                    pose=pose,
+                    scale=Vector3(x=1.0, y=1.0, z=1.0),
+                    color=ColorRGBA(r=1, g=1, b=1, a=1))
+    marker.mesh_resource = "package://atom_worlds/pattern/models/charuco_800x600_5x5_100/charuco_800x600_5x5_100.dae"
     marker.mesh_use_embedded_materials = True
     return marker
 
-def makeBoxControl( msg, pose ):
-    control =  InteractiveMarkerControl()
+
+def makeBoxControl(msg, pose):
+    control = InteractiveMarkerControl()
     control.always_visible = True
-    control.markers.append( makeBox(msg, pose) )
-    msg.controls.append( control )
+    control.markers.append(makeBox(msg, pose))
+    msg.controls.append(control)
     return control
 
 
@@ -150,12 +152,13 @@ def make6DofMarker(fixed, interaction_mode, pose, show_6dof=False):
     server.insert(int_marker, processFeedback)
     menu_handler.apply(server, int_marker.name)
 
-def processFeedback( feedback ):
+
+def processFeedback(feedback):
     s = "feedback from marker '" + feedback.marker_name
     s += "' / control '" + feedback.control_name + "'"
 
     if feedback.event_type == InteractiveMarkerFeedback.POSE_UPDATE:
-        rospy.loginfo( s + ": pose changed")
+        rospy.loginfo(s + ": pose changed")
         print('new pose = ' + str(feedback.pose))
 
         print('feedback = \n' + str(feedback))
@@ -169,7 +172,6 @@ def processFeedback( feedback ):
         pose.orientation.w = feedback.pose.orientation.w
 
         req = SetModelStateRequest()  # Create an object of type SetModelStateRequest
-
 
         req.model_state.model_name = model_name
         req.model_state.pose.position.x = pose.position.x
@@ -251,14 +253,12 @@ def callbackTimer(event):
     global pose
 
 
-
 if __name__ == "__main__":
 
     # Parse command line arguments
     ap = argparse.ArgumentParser(description='Interactive manipulation of pattern pattern in rviz.')
     # ap.add_argument("-c", "--calibration_file", type=str, required=True, help='full path to calibration file.')
     args = vars(ap.parse_args(args=filterLaunchArguments(sys.argv)))
-
 
     # create a timer to update the published transforms
     # rospy.Timer(rospy.Duration(0.01), frameCallback)

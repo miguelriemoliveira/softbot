@@ -645,4 +645,18 @@
       </plugin>
     </sensor>
   </gazebo>
+  <link name="pattern_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <visual name="pattern_1_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://atom_worlds/pattern/models/charuco_800x600_5x5_100/charuco_800x600_5x5_100.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="world-pattern_link" type="fixed">
+    <origin xyz="2.1279017804298648 0.29816703408043743 0.7927179887872843" rpy="-1.7842967447208273 -0.47461976188783866 -1.184754775705039"/>
+    <parent link="world"/>
+    <child link="pattern_link"/>
+  </joint>
 </robot>
