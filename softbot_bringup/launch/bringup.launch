@@ -41,6 +41,6 @@
     <include file="$(find softbot_bringup)/launch/visualize.launch">
     </include>
 
-    <node name="interactive_pattern" pkg="softbot_gazebo" type="interactive_pattern"/>
+    <node name="interactive_pattern" pkg="atom_worlds" type="interactive_pattern"/>
 
 </launch>

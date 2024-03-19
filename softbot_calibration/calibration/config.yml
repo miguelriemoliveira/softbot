@@ -35,7 +35,8 @@
 description_file: "package://softbot_description/urdf/softbot.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
-bag_file: "$ROS_BAGS/softbot/softbot1.bag"
+# bag_file: "$ROS_BAGS/softbot/train.bag"
+bag_file: "$ROS_BAGS/softbot/train.bag"
 
 # You must define a frame of reference for the optimization process.
 # It must exist in the transformation chains of all the sensors which are being calibrated.
@@ -75,7 +76,7 @@ sensors:
     child_link: "front_left_camera_rgb_frame"
     topic_name: "/front_left_camera/rgb/image_raw"
     modality: "rgb"
-    throttle:
+    throttle: 10
 
   front_right_camera:
     link: "front_right_camera_rgb_optical_frame"
@@ -83,15 +84,16 @@ sensors:
     child_link: "front_right_camera_rgb_frame"
     topic_name: "/front_right_camera/rgb/image_raw"
     modality: "rgb"
-    throttle:
+    throttle: 10
 
+  # Leaving this out for simplicity
   lidar3d:
     link: "lidar3d"
     parent_link: "lidar3d_plate_link"
     child_link: "lidar3d_base_link"
     topic_name: "/lidar3d/points"
     modality: "lidar3d"
-    throttle:
+    throttle: 10
 
 
 # ATOM will calibrate the extrinsic parameters of your links.
@@ -137,7 +139,7 @@ calibration_patterns:
     fixed: True
     pattern_type: "charuco"
     dictionary: "DICT_5X5_100"
-    mesh_file: "package://softbot_gazebo/models/charuco_800x600/charuco_800x600.dae"
+    mesh_file: "package://atom_worlds/pattern/models/charuco_800x600_5x5_100/charuco_800x600_5x5_100.dae"
     border_size: {'x': 0.04, 'y': 0.03}
     dimension: {'x': 11, 'y': 8}
     size: 0.06
@@ -148,7 +150,7 @@ calibration_patterns:
 # If your calibration problem is not fully constrained you should anchored one of the sensors.
 # This makes it immovable during the optimization.
 # This is typically referred to as gauge freedom.
-anchored_sensor:
+anchored_sensor: "front_left_camera"
 
 # Max time delta (in milliseconds) between sensor data messages when creating a collection.
 max_duration_between_msgs: 1000

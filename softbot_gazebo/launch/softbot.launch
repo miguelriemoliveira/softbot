@@ -5,7 +5,8 @@
     <arg name="gui" default="true"/>
     <arg name="debug" default="false"/>
     <arg name="verbose" default="false"/>
-    <arg name="world" default="$(find softbot_gazebo)/worlds/softbot.world"/>
+    <!-- <arg name="world" default="$(find softbot_gazebo)/worlds/softbot.world"/> -->
+    <arg name="world" default="$(find atom_worlds)/worlds/calibration_studio.world"/>
 
     <!-- Create gazebo world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">

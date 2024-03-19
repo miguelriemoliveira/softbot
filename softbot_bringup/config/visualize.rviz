@@ -11,7 +11,8 @@ Panels:
         - /Odometry1/Covariance1
         - /Axes-BaseLink1
         - /Axes-BaseLink2
-      Splitter Ratio: 0.7191489338874817
+        - /InteractiveMarkers1
+      Splitter Ratio: 0.5475637912750244
     Tree Height: 742
   - Class: rviz/Selection
     Name: Selection
@@ -31,7 +32,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: FrontLeftCamera-Image
+    SyncSource: FrontRightCamera-Image
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -366,6 +367,15 @@ Visualization Manager:
       Reference Frame: front_left_camera_rgb_optical_frame
       Show Trail: false
       Value: true
+    - Class: rviz/InteractiveMarkers
+      Enable Transparency: true
+      Enabled: true
+      Name: InteractiveMarkers
+      Show Axes: false
+      Show Descriptions: true
+      Show Visual Aids: false
+      Update Topic: /interactive_pattern/update
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 255; 255; 255
@@ -394,7 +404,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.3724042177200317
+      Distance: 2.3908801078796387
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -402,9 +412,9 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.2870727479457855
-        Y: 0.014745608903467655
-        Z: 0.13015156984329224
+        X: 0.007288896478712559
+        Y: 0.1941833198070526
+        Z: 0.5697215795516968
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
