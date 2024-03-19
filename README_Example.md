@@ -5,12 +5,17 @@ We refer to this functional coordinate frame, around which the robot rotates as 
 
 The system contains the following sensors:
 - **3dlidar** - A 3D LiDAR mounted on the robot frame;
-- **rgbd_cameras** - Three RGB-D cameras mounted on the robot frame, two facing the front and one facing the back of the robot.
+- **rgbd_cameras** - Two RGB-D cameras mounted on the robot frame, two facing the front of the robot.
 
-![softbot_gazebo](docs/gazebo.png)
+![softbot_gazebo](docs/gazebo_softbot.png)
 
-![softbot_gazebo](docs/softbot_rviz.gif)
 
+# Installation
+
+##### Add to .bashrc:
+```
+export GAZEBO_MODEL_PATH="`rospack find softbot_gazebo`/models:${GAZEBO_MODEL_PATH}"
+```
 # How to run
 
 First launch the gazebo simulation:
@@ -21,69 +26,99 @@ Then you can spawn the softbot robot:
 
     roslaunch softbot_bringup bringup.launch
 
-To Drive the Robot:
+If you have a controller and desire to use it to maneuver the robot you can :
 
-    roslaunch softbot_bringup teleop.launch 
+    roslaunch softbot_bringup bringup.launch controller:=true max_controller_vel:=0.2
 
-You can record a bag file using:
+-   **R2** -> Throttle
+-   **L2** -> Break
+-   **Left Joystick** -> Steer
+  
+  The user should be careful that any velocity above **0.2** causes some serious drifting and instability.
+
+
+After launching the entire system you can record a bagfile to use later in the calibration pipeline :
 
     roslaunch softbot_bringup record.launch
 
-OBS: 
+**OBS:**
        
-    The collection is automaticaly saved with a name like: tmp_2022-04-16-17-58-57.bag
+````
+The collection is automaticaly saved with a name like: 
+tmp_2022-04-16-17-58-57.bag in /tmp.
+````
 
-You can record a bag file using:
+**Contents in /tmp folder are deleted permanently after a reboot, so the user should move the bagfile want to save to a folder of the user's choosing before rebooting**
 
-    roslaunch softbot_bringup record.launch
 
-Play the bag file
-
-    roslaunch softbot_calibration playbag.launch
 
 #   Configuring a calibration package
-Once your calibration package is created you will have to configure the calibration procedure by editing the softbot_calibration/calibration/config.yml file with your system information. Here is an example of a config.yml file.
+Once your calibration package is created you will have to configure the calibration procedure by editing the *softbot_calibration/calibration/config.yml* file with your system information.
     
     rosrun softbot_calibration configure 
 
+This will create a set of files for launching the system, configuring rviz, etc. To accomplish this, ATOM reads the data from the given bagfile and robot xacro description, meaning if you ought to use another bagfile, you **should** tweak the *config.yml* and execute the configure script **again**.
 
-After filling the config.yml file, you can run the package configuration:
+After configuring, the user can play the bag file:
 
-    rosrun atom_calibration configure_calibration_pkg -n softbot_calibration --use_tfs
+    roslaunch softbot_calibration playbag.launch
 
-This will create a set of files for launching the system, configuring rviz, etc.
+Here is a pre-recorded bagfile should the user decide to skip the recording and proceed to the calibration itself. 
+
+**PLACEHOLDER FOR BAGFILE LINK
+E
+E
+E
+E
+E
+E**
+
+**Note :**
+Previously ATOM wasn't prepared to lead with transformations not defined in the xacro seamlessly, as is the case here in the transformation from the odom's frame to the robot's `base_footprint` hence it was required to configure with a now depracated flag `-utf`, which would discard the transformations from the xacro and use exclusively the data from the bagfile. This approach had the big downside that the user would lost all joint related info such as the type of joint. Now ATOM leads with this technicality seamlessly, the user doesn't have to use anything.
+
 
 #   Collect data
 
 To run a system calibration, one requires sensor data collected at different time instants. We refer to these as data collections. To collect data, the user should launch:
 
-    roslaunch softbot_calibration collect_data.launch  output_folder:=~/datasets/softbot/dataset3 overwrite:=true
+    roslaunch softbot_calibration collect_data.launch  output_folder:=~/datasets/softbot/dataset1 overwrite:=true
+
+Whenever there are LiDARs in the equation, it is almost necessary for the user to correct the automatic labeling. For doing so the user should run :
+
+    roslaunch softbot_calibration dataset_playback.launch
+
+... and ...
+
+    rosrun atom_calibration dataset_playback -json $ATOM_DATASETS/softbot/dataset1/dataset_corrected.json
+
+
 # Calibrate sensors
-finally run an optimization that will calibrate your sensors:
 
-    roslaunch softbot_calibration calibrate.launch dataset_file:=~/datasets/softbot/dataset3/dataset.json run_calibration:=false 
+Finally the user can run an optimization that will calibrate your sensors:
 
-and then launch the script in standalone mode
+    roslaunch softbot_calibration calibrate.launch
 
-    rosrun atom_calibration calibrate -json ~/datasets/softbot/dataset3/dataset.json  -phased -rv -v -si
-OBS: If needed we can exclud some of the bad collections:
 
-    rosrun atom_calibration calibrate -json ~/datasets/softbot/dataset4/dataset_corrected.json  -phased -rv -v -si -csf "lambda x: int(x) not in [16,21,23,24,34,36]"
+and then launch the calibration script:
 
-It is possible to add an initial gess of the position of the sensors in order to get a more real result
+    rosrun atom_calibration calibrate \
+    -json $ATOM_DATASETS/softbot/dataset1/dataset_corrected.json \
+    -v -rv -si -csf "lambda x : int(x)" -ipg -nig 0.02 0.02
 
-    rosrun atom_calibration calibrate -json ~/datasets/softbot/dataset4/dataset_corrected.json  -phased -rv -v -si -csf "lambda x: int(x) not in [18,24,23] " -nig 0.01  0.003 -ss 3 -ipg
+- -json     -> Path to the dataset **json**
+- -v        -> **V**erbose mode
+- -rv       -> Enable **R**os **V**isualization
+- -si       -> **S**how **I**mages in Rviz
+- -csf      -> **C**ollection **S**election **F**unction
+- -ipg      -> **I**nitial **P**osition **G**host
+- -nig  x y -> **N**oisy **I**nitial **G**uess x[cm] in translation, y[º] in rotation
+
+OBS: If needed we can exclude some bad collections like for instance suppose the user wants to exclude collection 001 and 002:
+
+    rosrun atom_calibration calibrate \
+    -json $ATOM_DATASETS/softbot/dataset1/dataset_corrected.json \
+    -v -rv -si -csf "lambda x : int(x) not in [1,2]" -ipg -nig 0.02 0.02
 
 To avaluate the callibration that was done, its need to do the anotation
 
     rosrun atom_evaluation annotate.py -test_json TEST_JSON_FILE -cs front_left_camara -si
-                
-
-# Installation
-
-##### Add to .bashrc:
-```
-export ROS_BAGS="/home/<username>/bagfiles"
-export ATOM_DATASETS="/home/<username>/datasets"
-export GAZEBO_MODEL_PATH="`rospack find softbot_gazebo`/models:${GAZEBO_MODEL_PATH}"
-```
