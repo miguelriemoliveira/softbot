@@ -7,7 +7,13 @@ The system contains the following sensors:
 - **3dlidar** - A 3D LiDAR mounted on the robot frame;
 - **rgbd_cameras** - Two RGB-D cameras mounted on the robot frame, two facing the front of the robot.
 
+
+
 ![softbot_gazebo](docs/gazebo_softbot.png)
+
+and then you can also view it in rviz:
+
+![softbot_gazebo](docs/softbot_rviz_updated.gif)
 
 
 # Installation
@@ -92,6 +98,23 @@ Whenever there are LiDARs in the equation, it is almost necessary for the user t
     rosrun atom_calibration dataset_playback -json $ATOM_DATASETS/softbot/dataset1/dataset_corrected.json
 
 
+![softbot_gazebo](docs/dataset_labeling.png)
+
+The user's goal is to make sure the **only** green points being those of the pattern, distinguishing between **dark** green for border points and **light** green inside the pattern.
+
+Here is a pre-labeled dataset should the user decide to skip the recording and proceed to the calibration itself. 
+
+**PLACEHOLDER FOR TRAIN DATASET LINK
+E
+E
+E
+E
+E
+E**
+
+**NOTE :**
+In order to select the points, the user should use the "*SelectedPointsPublisher*" tool in rviz. In case this tool isn't by default on the toolbar, the use can add it by pressing the **+** button on the far right of the toolbar.
+
 # Calibrate sensors
 
 Finally the user can run an optimization that will calibrate your sensors:
@@ -119,6 +142,85 @@ OBS: If needed we can exclude some bad collections like for instance suppose the
     -json $ATOM_DATASETS/softbot/dataset1/dataset_corrected.json \
     -v -rv -si -csf "lambda x : int(x) not in [1,2]" -ipg -nig 0.02 0.02
 
-To avaluate the callibration that was done, its need to do the anotation
+By following this example, the user's end output should be something similar with :
 
-    rosrun atom_evaluation annotate.py -test_json TEST_JSON_FILE -cs front_left_camara -si
+```` 
++------------+------------------------+-------------------------+-------------+
+| Collection | front_left_camera [px] | front_right_camera [px] | lidar3d [m] |
++------------+------------------------+-------------------------+-------------+
+|    001     |         1.1104         |          0.8573         |    0.0059   |
+|    002     |         0.9173         |          0.7258         |    0.0068   |
+|    003     |         0.7595         |          0.5824         |    0.0067   |
+|    004     |         0.4805         |          0.4594         |    0.0053   |
+|  Averages  |         0.8169         |          0.6562         |    0.0062   |
++------------+------------------------+-------------------------+-------------+
+````
+
+And by comparing with the **initial position ghost** (-ipg), the user can visually conclude about the calibration :
+
+
+![softbot_gazebo](docs/calibration_results.png)
+
+## Evaluation
+
+Before anything, the user must annotate the pattern in the RGB images : (To do so it's necessary a test dataset, which the user can record or download here **PLACEHOLDER FOR Test DATASET LINK
+E
+E
+E
+E
+E
+E**
+)
+
+    rosrun atom_evaluation annotate_pattern_borders_in_rgb_or_depth \
+    --dataset $ATOM_DATASETS/softbot/test_dataset/dataset_corrected.json \
+    --rgb_sensor front_right_camera
+
+
+...and...
+
+    rosrun atom_evaluation annotate_pattern_borders_in_rgb_or_depth \
+    --dataset /home/brunofavs/datasets/softbot/test_dataset/dataset_corrected.json\
+     --rgb_sensor front_left_camera
+
+Should look similar to this for every collection and camera :
+
+![softbot_gazebo](docs/annotation.png)
+
+
+To evaluate the calibration that was done, the user can run :
+
+    roslaunch softbot_calibration full_evaluation.launch \
+    train_json:=$ATOM_DATASETS/softbot/dataset_perfect_simulation/dataset_corrected.json \
+    test_json:=$ATOM_DATASETS/softbot/test_dataset/dataset_corrected.json 
+
+And for example the results per collection are :
+
+```
++--------------+-----------+-------------+-------------+------------+-----------+
+| Collection # | RMS (pix) | X err (pix) | Y err (pix) | Trans (mm) | Rot (deg) |
++--------------+-----------+-------------+-------------+------------+-----------+
+|     000      |   3.7431  |    1.1038   |    3.4902   |   9.5851   |   0.0416  |
+|     001      |   3.1000  |    0.7625   |    2.9246   |   9.5074   |   0.0489  |
+|     002      |   3.7925  |    1.3990   |    3.4694   |  10.1129   |   0.0466  |
+|     003      |   3.7405  |    1.0998   |    3.4892   |   9.5648   |   0.0426  |
+|     004      |   3.0920  |    0.7469   |    2.9123   |   9.2147   |   0.0111  |
+|   Averages   |   3.4936  |    1.0224   |    3.2571   |   9.5970   |   0.0382  |
++--------------+-----------+-------------+-------------+------------+-----------+
+```
+
+...and per transformation are :
+
+```
+
++--------------+-----------+-------------+-------------+------------+-----------+
+| Collection # | RMS (pix) | X err (pix) | Y err (pix) | Trans (mm) | Rot (deg) |
++--------------+-----------+-------------+-------------+------------+-----------+
+|     000      |   3.7431  |    1.1038   |    3.4902   |   9.5851   |   0.0416  |
+|     001      |   3.1000  |    0.7625   |    2.9246   |   9.5074   |   0.0489  |
+|     002      |   3.7925  |    1.3990   |    3.4694   |  10.1129   |   0.0466  |
+|     003      |   3.7405  |    1.0998   |    3.4892   |   9.5648   |   0.0426  |
+|     004      |   3.0920  |    0.7469   |    2.9123   |   9.2147   |   0.0111  |
+|   Averages   |   3.4936  |    1.0224   |    3.2571   |   9.5970   |   0.0382  |
++--------------+-----------+-------------+-------------+------------+-----------+
+```
