@@ -65,6 +65,11 @@ Once your calibration package is created you will have to configure the calibrat
 
 This will create a set of files for launching the system, configuring rviz, etc. To accomplish this, ATOM reads the data from the given bagfile and robot xacro description, meaning if you ought to use another bagfile, you **should** tweak the *config.yml* and execute the configure script **again**.
 
+After configuring, the user's transformation summary should look similar to this :
+
+![softbot_gazebo](docs/summary.jpg)
+
+
 After configuring, the user can play the bag file:
 
     roslaunch softbot_calibration playbag.launch
