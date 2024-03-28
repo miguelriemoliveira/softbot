@@ -42,6 +42,15 @@
 
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
     <!-- Throttle topics -->
+    <node pkg="topic_tools" type="throttle" name="throttler_front_left_camera"
+          args="messages /front_left_camera/rgb/image_raw/compressed_to_throttle 10 /front_left_camera/rgb/image_raw/compressed"/>
+    
+    <node pkg="topic_tools" type="throttle" name="throttler_front_right_camera"
+          args="messages /front_right_camera/rgb/image_raw/compressed_to_throttle 10 /front_right_camera/rgb/image_raw/compressed"/>
+    
+    <node pkg="topic_tools" type="throttle" name="throttler_lidar3d"
+          args="messages /lidar3d/points_to_throttle 10 /lidar3d/points"/>
+    
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
     <!-- Load robot description and tf generators -->
     <param name="robot_description" command="$(find xacro)/xacro $(arg description_file)"/>
@@ -54,7 +63,7 @@
 
     <!-- Play atom bag file adding tfs robot_state_publisher  -->
     <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
-              args=" $(arg bag_file) --clock -r $(arg bag_rate) -l -s $(arg bag_start) -d 2 "/>
+              args=" $(arg bag_file) --clock -r $(arg bag_rate) -l -s $(arg bag_start) -d 2 /front_left_camera/rgb/image_raw/compressed:=/front_left_camera/rgb/image_raw/compressed_to_throttle /front_right_camera/rgb/image_raw/compressed:=/front_right_camera/rgb/image_raw/compressed_to_throttle /lidar3d/points:=/lidar3d/points_to_throttle"/>
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->

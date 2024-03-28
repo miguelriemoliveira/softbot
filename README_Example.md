@@ -13,7 +13,8 @@ The system contains the following sensors:
 
 and then you can also view it in rviz:
 
-![softbot_gazebo](docs/softbot_rviz_updated.gif)
+<!-- ![softbot_gazebo](docs/softbot_rviz_updated.gif)  -->
+<img src="docs/softbot_rviz_updated.gif" width="1080px" />
 
 
 # Installation
@@ -49,13 +50,10 @@ After launching the entire system you can record a bagfile to use later in the c
 
 **OBS:**
        
+The collection is automaticaly saved in `/tmp`: 
 ````
-The collection is automaticaly saved with a name like: 
-tmp_2022-04-16-17-58-57.bag in /tmp.
+tmp_<yyyy-mm-dd-hh-mm-ss>.bag
 ````
-
-**Contents in /tmp folder are deleted permanently after a reboot, so the user should move the bagfile want to save to a folder of the user's choosing before rebooting**
-
 
 
 #   Configuring a calibration package
@@ -87,6 +85,9 @@ E**
 **Note :**
 Previously ATOM wasn't prepared to lead with transformations not defined in the xacro seamlessly, as is the case here in the transformation from the odom's frame to the robot's `base_footprint` hence it was required to configure with a now depracated flag `-utf`, which would discard the transformations from the xacro and use exclusively the data from the bagfile. This approach had the big downside that the user would lost all joint related info such as the type of joint. Now ATOM leads with this technicality seamlessly, the user doesn't have to use anything.
 
+In softbot's case this will happen, since the transformation from `world` to `base_footprint` is dynamic and not defined in the xacro. Thus *ATOM* will create a auxiliary `<bagfile_name>_filtered.bag` containing only the transformations defined in the previous phrase. *Atom* then reads this bagfile and publishes all the transforms found here in `/tf`.
+
+
 
 #   Collect data
 
@@ -103,9 +104,12 @@ Whenever there are LiDARs in the equation, it is almost necessary for the user t
     rosrun atom_calibration dataset_playback -json $ATOM_DATASETS/softbot/dataset1/dataset_corrected.json
 
 
-![softbot_gazebo](docs/dataset_labeling.png)
+<!-- ![softbot_gazebo](docs/dataset_labeling.png) -->
+![softbot_gazebo](docs/dataset_labeling_noGUI.png)
 
 The user's goal is to make sure the **only** green points being those of the pattern, distinguishing between **dark** green for border points and **light** green inside the pattern.
+
+More information regarding this topic can be found in [*Atom*'s wiki](https://lardemua.github.io/atom_documentation/procedures/#3d-lidar-labeling).
 
 Here is a pre-labeled dataset should the user decide to skip the recording and proceed to the calibration itself. 
 
@@ -116,6 +120,13 @@ E
 E
 E
 E**
+
+Collection |           front_left_camera        | front_right_camera            |           lidar3d/points
+:---------:|:----------------------------------:|:-----------------------------:|:------------------------------:
+0          | ![](docs/dataset_imgs/0L.png)      | ![](docs/dataset_imgs/0R.png) | ![](docs/dataset_imgs/0pcd.png)
+1          | ![](docs/dataset_imgs/1L.png)      | ![](docs/dataset_imgs/1R.png) | ![](docs/dataset_imgs/1pcd.png)
+2          | ![](docs/dataset_imgs/2L.png)      | ![](docs/dataset_imgs/2R.png) | ![](docs/dataset_imgs/2pcd.png)
+3          | ![](docs/dataset_imgs/3L.png)      | ![](docs/dataset_imgs/3R.png) | ![](docs/dataset_imgs/3pcd.png)
 
 **NOTE :**
 In order to select the points, the user should use the "*SelectedPointsPublisher*" tool in rviz. In case this tool isn't by default on the toolbar, the use can add it by pressing the **+** button on the far right of the toolbar.
@@ -141,11 +152,7 @@ and then launch the calibration script:
 - -ipg      -> **I**nitial **P**osition **G**host
 - -nig  x y -> **N**oisy **I**nitial **G**uess x[cm] in translation, y[º] in rotation
 
-OBS: If needed we can exclude some bad collections like for instance suppose the user wants to exclude collection 001 and 002:
 
-    rosrun atom_calibration calibrate \
-    -json $ATOM_DATASETS/softbot/dataset1/dataset_corrected.json \
-    -v -rv -si -csf "lambda x : int(x) not in [1,2]" -ipg -nig 0.02 0.02
 
 By following this example, the user's end output should be something similar with :
 
@@ -164,7 +171,9 @@ By following this example, the user's end output should be something similar wit
 And by comparing with the **initial position ghost** (-ipg), the user can visually conclude about the calibration :
 
 
-![softbot_gazebo](docs/calibration_results.png)
+<!-- ![softbot_gazebo](docs/calibration_results.png) -->
+
+<img src="docs/ipg.gif" width="540px" />
 
 ## Evaluation
 
