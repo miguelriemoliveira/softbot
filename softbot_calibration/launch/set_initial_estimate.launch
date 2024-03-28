@@ -36,7 +36,7 @@
     <arg name="output_file" default="$(find softbot_calibration)/urdf/initial_estimate.urdf.xacro"/>
     <arg name="rviz_file" default="$(find softbot_calibration)/rviz/set_initial_estimate.rviz"/>
     <!-- arguments to be passed onto playbag.launch  -->
-    <arg name="bag_file" default="$(env ROS_BAGS)/softbot/train_atom_filtered.bag"/>
+    <arg name="bag_file" default="$(env ROS_BAGS)/softbot/softbot1_atom_filtered.bag"/>
     <arg name="bag_start" default="0"/>
     <arg name="bag_rate" default="1"/>
     <arg name="marker_size" default="0.5"/>

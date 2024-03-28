@@ -109,9 +109,9 @@ additional_tfs:
   #           This is the transformation (i.e. link) that we be optimized.
   #
   # EXAMPLE:
-  #base_footprint_to_base_link:
-  #  parent_link: "base_footprint"
-  #  child_link: "base_link"
+  world_to_base_footprint:
+   parent_link: "world"
+   child_link: "base_footprint"
 
 
 # ATOM can also calibrate several parameters of your joints.
@@ -139,7 +139,11 @@ calibration_patterns:
     fixed: True
     pattern_type: "charuco"
     dictionary: "DICT_5X5_100"
+<<<<<<< HEAD
     mesh_file: "package://atom_worlds/pattern/models/charuco_800x600_5x5_100/charuco_800x600_5x5_100.dae"
+=======
+    mesh_file:  "package://atom_worlds/pattern/models/charuco_800x600_5x5_100/charuco_800x600_5x5_100.dae"
+>>>>>>> 0f43ec1424622b6c5cb4b9619e6ce5df6baf9236
     border_size: {'x': 0.04, 'y': 0.03}
     dimension: {'x': 11, 'y': 8}
     size: 0.06
