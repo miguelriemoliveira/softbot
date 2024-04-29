@@ -111,6 +111,7 @@
     <property name="shotcut">1</property>
     <property name="shotcut:projectAudioChannels">2</property>
     <property name="shotcut:projectFolder">0</property>
+    <property name="shotcut:skipConvert">0</property>
     <track producer="background"/>
     <track producer="playlist0"/>
     <track producer="playlist1"/>
